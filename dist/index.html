@@ -40,7 +40,9 @@
       #fullscreenFrameHost { touch-action: pan-x pan-y pinch-zoom; -webkit-overflow-scrolling: touch; }
       .fullscreen-page { position: relative; width: min(100vw, calc(100dvh * 0.772727)); height: min(100dvh, calc(100vw * 1.294118)); margin: auto; background: white; }
       .fullscreen-preview { display: block; width: 100%; height: 100%; background: white; user-select: none; -webkit-user-drag: none; touch-action: pan-x pan-y pinch-zoom; }
-      .resume-social-link { position: absolute; top: 5.85%; height: 2.15%; z-index: 10; border-radius: 0.2rem; }
+      .viewer-social-links { position: absolute; top: 0; left: 50%; z-index: 15; width: 100%; aspect-ratio: 612 / 792; transform: translateX(-50%); pointer-events: none; }
+      .resume-social-link { position: absolute; top: 5.2%; height: 3.2%; z-index: 10; border-radius: 0.2rem; }
+      .viewer-social-links .resume-social-link { pointer-events: auto; }
       .resume-social-link:hover { background: rgb(56 189 248 / 0.14); }
       .resume-social-link:focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; background: rgb(56 189 248 / 0.14); }
       .resume-social-link.linkedin { left: 45.45%; width: 21.2%; }
@@ -149,6 +151,24 @@
               <path d="m21 21-6-6" />
             </svg>
           </button>
+          <div id="viewerSocialLinks" class="viewer-social-links" aria-label="Résumé profile links">
+            <a
+              href="https://www.linkedin.com/in/vincent-pronel-286599369"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="resume-social-link linkedin"
+              aria-label="Open Vincent Pronel's LinkedIn profile"
+              title="Open LinkedIn"
+            ></a>
+            <a
+              href="https://github.com/vinnypronel"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="resume-social-link github"
+              aria-label="Open Vincent Pronel's GitHub profile"
+              title="Open GitHub"
+            ></a>
+          </div>
           <object
             class="resume-panel is-active bg-white"
             data-resume-panel="ai"
@@ -303,6 +323,7 @@
       const label = document.getElementById('resumeLabel');
       const shareButton = document.getElementById('shareButton');
       const fullscreenButton = document.getElementById('fullscreenButton');
+      const viewerSocialLinks = document.getElementById('viewerSocialLinks');
       const fullscreenViewer = document.getElementById('fullscreenViewer');
       const fullscreenFrameHost = document.getElementById('fullscreenFrameHost');
       const closeFullscreenButton = document.getElementById('closeFullscreenButton');
@@ -328,6 +349,7 @@
         });
 
         label.textContent = selected.label;
+        viewerSocialLinks.hidden = currentResumeKey === 'abstract';
         viewerPanels.forEach((panel) => {
           const isActive = panel.dataset.resumePanel === currentResumeKey;
           panel.classList.toggle('is-active', isActive);
