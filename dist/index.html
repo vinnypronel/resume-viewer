@@ -33,6 +33,8 @@
       .safe-top { padding-top: env(safe-area-inset-top); }
       .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
       .resume-frame { height: calc(100dvh - 9.55rem - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+      .resume-panel { position: absolute; inset: 0; width: 100%; height: 100%; visibility: hidden; pointer-events: none; }
+      .resume-panel.is-active { visibility: visible; pointer-events: auto; }
       @media (min-width: 640px) {
         .resume-frame { height: calc(100dvh - 8rem); }
       }
@@ -108,10 +110,10 @@
       </header>
 
       <section class="safe-bottom min-h-0 flex-1 p-2 sm:p-4" aria-live="polite">
-        <div class="mx-auto h-full max-w-6xl overflow-hidden rounded-xl border border-slate-300 bg-white shadow-xl shadow-slate-900/10">
+        <div id="resumeViewer" class="resume-frame relative mx-auto max-w-6xl overflow-hidden rounded-xl border border-slate-300 bg-white shadow-xl shadow-slate-900/10">
           <object
-            id="resumeViewer"
-            class="resume-frame block w-full bg-white"
+            class="resume-panel is-active bg-white"
+            data-resume-panel="ai"
             data="resumes/vincent-pronel-ai-ml.pdf#view=FitH&amp;toolbar=1&amp;navpanes=0"
             type="application/pdf"
             role="tabpanel"
@@ -121,8 +123,47 @@
             <div class="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
               <p class="max-w-md text-base text-slate-700">Your browser cannot display this PDF inline.</p>
               <a
-                id="fallbackLink"
                 href="resumes/vincent-pronel-ai-ml.pdf"
+                target="_blank"
+                rel="noopener"
+                class="rounded-lg bg-ink px-5 py-3 font-semibold text-white"
+              >Open the résumé</a>
+            </div>
+          </object>
+          <object
+            class="resume-panel bg-white"
+            data-resume-panel="swe"
+            data="resumes/vincent-pronel-fullstack-swe.pdf#view=FitH&amp;toolbar=1&amp;navpanes=0"
+            type="application/pdf"
+            role="tabpanel"
+            aria-labelledby="tab-swe"
+            aria-hidden="true"
+            title="Vincent Pronel full-stack software engineering résumé"
+          >
+            <div class="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
+              <p class="max-w-md text-base text-slate-700">Your browser cannot display this PDF inline.</p>
+              <a
+                href="resumes/vincent-pronel-fullstack-swe.pdf"
+                target="_blank"
+                rel="noopener"
+                class="rounded-lg bg-ink px-5 py-3 font-semibold text-white"
+              >Open the résumé</a>
+            </div>
+          </object>
+          <object
+            class="resume-panel bg-white"
+            data-resume-panel="data"
+            data="resumes/vincent-pronel-data-analysis.pdf#view=FitH&amp;toolbar=1&amp;navpanes=0"
+            type="application/pdf"
+            role="tabpanel"
+            aria-labelledby="tab-data"
+            aria-hidden="true"
+            title="Vincent Pronel data analysis résumé"
+          >
+            <div class="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
+              <p class="max-w-md text-base text-slate-700">Your browser cannot display this PDF inline.</p>
+              <a
+                href="resumes/vincent-pronel-data-analysis.pdf"
                 target="_blank"
                 rel="noopener"
                 class="rounded-lg bg-ink px-5 py-3 font-semibold text-white"
@@ -162,11 +203,10 @@
       };
 
       const tabs = [...document.querySelectorAll('[role="tab"]')];
-      const viewer = document.getElementById('resumeViewer');
+      const viewerPanels = [...document.querySelectorAll('[data-resume-panel]')];
       const label = document.getElementById('resumeLabel');
       const openLink = document.getElementById('openLink');
       const downloadLink = document.getElementById('downloadLink');
-      const fallbackLink = document.getElementById('fallbackLink');
 
       function selectResume(key, updateHash = true) {
         const selected = resumes[key] || resumes.ai;
@@ -181,12 +221,13 @@
         });
 
         label.textContent = selected.label;
-        viewer.data = `${selected.file}#view=FitH&toolbar=1&navpanes=0`;
-        viewer.title = selected.title;
-        viewer.setAttribute('aria-labelledby', selected.tabId);
+        viewerPanels.forEach((panel) => {
+          const isActive = panel.dataset.resumePanel === key;
+          panel.classList.toggle('is-active', isActive);
+          panel.setAttribute('aria-hidden', String(!isActive));
+        });
         openLink.href = selected.file;
         downloadLink.href = selected.file;
-        fallbackLink.href = selected.file;
 
         if (updateHash) history.replaceState(null, '', `#${key}`);
       }
