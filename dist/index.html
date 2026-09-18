@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b1220" />
+    <meta
+      name="description"
+      content="View Vincent Pronel's AI/ML, full-stack software engineering, and data analysis résumés."
+    />
+    <title>Vincent Pronel | Résumés</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1220'/%3E%3Cpath d='M17 17h30v30H17z' fill='none' stroke='%2338bdf8' stroke-width='4'/%3E%3Cpath d='m23 25 9 18 9-18' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: '#0b1220',
+              signal: '#38bdf8',
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html, body { height: 100%; }
+      body { margin: 0; overflow: hidden; }
+      .safe-top { padding-top: env(safe-area-inset-top); }
+      .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+      .resume-frame { height: calc(100dvh - 9.55rem - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+      @media (min-width: 640px) {
+        .resume-frame { height: calc(100dvh - 8rem); }
+      }
+    </style>
+  </head>
+  <body class="bg-slate-200 text-slate-900 antialiased">
+    <main class="flex h-full min-h-0 flex-col">
+      <header class="safe-top shrink-0 bg-ink text-white shadow-lg shadow-slate-900/20">
+        <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pb-3 pt-3 sm:px-6">
+          <div class="min-w-0">
+            <h1 class="truncate text-lg font-semibold tracking-tight sm:text-xl">Vincent Pronel</h1>
+            <p id="resumeLabel" class="text-sm text-slate-300">AI/ML Résumé</p>
+          </div>
+          <div class="flex shrink-0 gap-2">
+            <a
+              id="openLink"
+              href="resumes/vincent-pronel-ai-ml.pdf"
+              target="_blank"
+              rel="noopener"
+              class="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-600 px-3 text-sm font-medium transition hover:border-signal hover:text-signal focus:outline-none focus:ring-2 focus:ring-signal"
+              aria-label="Open selected résumé full screen"
+            >
+              Open
+            </a>
+            <a
+              id="downloadLink"
+              href="resumes/vincent-pronel-ai-ml.pdf"
+              download
+              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-signal px-3 text-sm font-semibold text-ink transition hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-white"
+              aria-label="Download selected résumé"
+            >
+              Download
+            </a>
+          </div>
+        </div>
+
+        <nav class="mx-auto max-w-6xl px-2 sm:px-6" aria-label="Résumé versions">
+          <div
+            id="resumeTabs"
+            class="grid grid-cols-3 gap-1 rounded-t-xl bg-slate-800/80 p-1"
+            role="tablist"
+            aria-label="Choose a résumé"
+          >
+            <button
+              type="button"
+              role="tab"
+              id="tab-ai"
+              aria-selected="true"
+              aria-controls="resumeViewer"
+              data-resume="ai"
+              class="min-h-11 rounded-lg bg-white px-2 py-2 text-sm font-semibold text-ink shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-signal sm:text-base"
+            >AI/ML</button>
+            <button
+              type="button"
+              role="tab"
+              id="tab-swe"
+              aria-selected="false"
+              aria-controls="resumeViewer"
+              data-resume="swe"
+              class="min-h-11 rounded-lg px-2 py-2 text-sm font-medium text-slate-300 transition hover:bg-slate-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-signal sm:text-base"
+            >FullStack SWE</button>
+            <button
+              type="button"
+              role="tab"
+              id="tab-data"
+              aria-selected="false"
+              aria-controls="resumeViewer"
+              data-resume="data"
+              class="min-h-11 rounded-lg px-2 py-2 text-sm font-medium text-slate-300 transition hover:bg-slate-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-signal sm:text-base"
+            >Data Analysis</button>
+          </div>
+        </nav>
+      </header>
+
+      <section class="safe-bottom min-h-0 flex-1 p-2 sm:p-4" aria-live="polite">
+        <div class="mx-auto h-full max-w-6xl overflow-hidden rounded-xl border border-slate-300 bg-white shadow-xl shadow-slate-900/10">
+          <object
+            id="resumeViewer"
+            class="resume-frame block w-full bg-white"
+            data="resumes/vincent-pronel-ai-ml.pdf#view=FitH&amp;toolbar=1&amp;navpanes=0"
+            type="application/pdf"
+            role="tabpanel"
+            aria-labelledby="tab-ai"
+            title="Vincent Pronel AI/ML résumé"
+          >
+            <div class="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
+              <p class="max-w-md text-base text-slate-700">Your browser cannot display this PDF inline.</p>
+              <a
+                id="fallbackLink"
+                href="resumes/vincent-pronel-ai-ml.pdf"
+                target="_blank"
+                rel="noopener"
+                class="rounded-lg bg-ink px-5 py-3 font-semibold text-white"
+              >Open the résumé</a>
+            </div>
+          </object>
+        </div>
+      </section>
+    </main>
+
+    <noscript>
+      <div class="fixed inset-x-0 bottom-0 bg-amber-100 p-3 text-center text-sm text-amber-950">
+        JavaScript is disabled. Use the Open button above to view the AI/ML résumé.
+      </div>
+    </noscript>
+
+    <script>
+      const resumes = {
+        ai: {
+          label: 'AI/ML Résumé',
+          file: 'resumes/vincent-pronel-ai-ml.pdf',
+          title: 'Vincent Pronel AI/ML résumé',
+          tabId: 'tab-ai',
+        },
+        swe: {
+          label: 'FullStack SWE Résumé',
+          file: 'resumes/vincent-pronel-fullstack-swe.pdf',
+          title: 'Vincent Pronel full-stack software engineering résumé',
+          tabId: 'tab-swe',
+        },
+        data: {
+          label: 'Data Analysis Résumé',
+          file: 'resumes/vincent-pronel-data-analysis.pdf',
+          title: 'Vincent Pronel data analysis résumé',
+          tabId: 'tab-data',
+        },
+      };
+
+      const tabs = [...document.querySelectorAll('[role="tab"]')];
+      const viewer = document.getElementById('resumeViewer');
+      const label = document.getElementById('resumeLabel');
+      const openLink = document.getElementById('openLink');
+      const downloadLink = document.getElementById('downloadLink');
+      const fallbackLink = document.getElementById('fallbackLink');
+
+      function selectResume(key, updateHash = true) {
+        const selected = resumes[key] || resumes.ai;
+
+        tabs.forEach((tab) => {
+          const isActive = tab.dataset.resume === key;
+          tab.setAttribute('aria-selected', String(isActive));
+          tab.tabIndex = isActive ? 0 : -1;
+          tab.className = isActive
+            ? 'min-h-11 rounded-lg bg-white px-2 py-2 text-sm font-semibold text-ink shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-signal sm:text-base'
+            : 'min-h-11 rounded-lg px-2 py-2 text-sm font-medium text-slate-300 transition hover:bg-slate-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-signal sm:text-base';
+        });
+
+        label.textContent = selected.label;
+        viewer.data = `${selected.file}#view=FitH&toolbar=1&navpanes=0`;
+        viewer.title = selected.title;
+        viewer.setAttribute('aria-labelledby', selected.tabId);
+        openLink.href = selected.file;
+        downloadLink.href = selected.file;
+        fallbackLink.href = selected.file;
+
+        if (updateHash) history.replaceState(null, '', `#${key}`);
+      }
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => selectResume(tab.dataset.resume));
+        tab.addEventListener('keydown', (event) => {
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+          event.preventDefault();
+          let nextIndex = index;
+          if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+          if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+          if (event.key === 'Home') nextIndex = 0;
+          if (event.key === 'End') nextIndex = tabs.length - 1;
+          tabs[nextIndex].focus();
+          selectResume(tabs[nextIndex].dataset.resume);
+        });
+      });
+
+      const initialKey = location.hash.slice(1);
+      selectResume(resumes[initialKey] ? initialKey : 'ai', false);
+    </script>
+  </body>
+</html>
