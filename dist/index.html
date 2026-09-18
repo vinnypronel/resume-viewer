@@ -36,6 +36,8 @@
       .resume-panel { position: absolute; inset: 0; width: 100%; height: 100%; visibility: hidden; pointer-events: none; }
       .resume-panel.is-active { visibility: visible; pointer-events: auto; }
       .fullscreen-close { top: calc(0.75rem + env(safe-area-inset-top)); right: calc(0.75rem + env(safe-area-inset-right)); }
+      #fullscreenViewer { width: 100vw; height: 100dvh; overflow: hidden; }
+      .fullscreen-frame { position: absolute; inset: 0; width: 100vw; height: 100dvh; border: 0; background: white; }
       @media (min-width: 640px) {
         .resume-frame { height: calc(100dvh - 8rem); }
       }
@@ -45,23 +47,21 @@
     <main class="flex h-full min-h-0 flex-col">
       <header class="safe-top shrink-0 bg-ink text-white shadow-lg shadow-slate-900/20">
         <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pb-3 pt-3 sm:px-6">
-          <div class="flex min-w-0 items-center gap-3">
-            <div class="min-w-0">
-              <h1 class="truncate text-lg font-semibold tracking-tight sm:text-xl">Vincent Pronel</h1>
-              <p id="resumeLabel" class="truncate text-sm text-slate-300">AI/ML Résumé</p>
-            </div>
+          <div class="min-w-0">
+            <h1 class="truncate text-lg font-semibold tracking-tight sm:text-xl">Vincent Pronel</h1>
+            <p id="resumeLabel" class="truncate text-sm text-slate-300">AI/ML Résumé</p>
+          </div>
+          <div class="flex shrink-0 items-center gap-2">
             <div class="h-8 w-px shrink-0 bg-slate-600" aria-hidden="true"></div>
             <img
               src="assets/kean-logo.svg"
               alt="Kean University"
               class="h-7 w-auto shrink-0 sm:h-8"
             />
-          </div>
-          <div class="flex shrink-0">
             <button
               id="shareButton"
               type="button"
-              class="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-signal text-ink transition hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-white disabled:cursor-wait disabled:opacity-60"
+              class="inline-flex h-11 w-8 items-center justify-center text-white transition hover:text-signal focus:outline-none focus:ring-2 focus:ring-white disabled:cursor-wait disabled:opacity-60"
               aria-label="Share or save selected résumé"
               title="Share or save résumé"
             >
@@ -118,7 +118,7 @@
           <button
             id="fullscreenButton"
             type="button"
-            class="absolute right-3 top-3 z-20 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-ink/90 text-white shadow-lg backdrop-blur transition hover:bg-ink focus:outline-none focus:ring-2 focus:ring-signal"
+            class="absolute right-3 top-3 z-20 inline-flex h-11 w-11 items-center justify-center text-slate-950 transition hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-signal"
             aria-label="View selected résumé full screen"
             title="Full screen"
           >
@@ -205,7 +205,7 @@
       hidden
     >
       <h2 id="fullscreenTitle" class="sr-only">Full-screen résumé</h2>
-      <div id="fullscreenFrameHost" class="h-full w-full"></div>
+      <div id="fullscreenFrameHost" class="relative h-full w-full overflow-hidden"></div>
       <button
         id="closeFullscreenButton"
         type="button"
@@ -336,9 +336,10 @@
       async function openFullscreenViewer() {
         const selected = resumes[currentResumeKey];
         const frame = document.createElement('iframe');
-        frame.src = `${selected.file}#view=FitH&toolbar=1&navpanes=0`;
+        frame.src = `${selected.file}#view=Fit&toolbar=0&navpanes=0`;
         frame.title = selected.title;
-        frame.className = 'h-full w-full border-0 bg-white';
+        frame.className = 'fullscreen-frame';
+        frame.scrolling = 'yes';
         frame.setAttribute('allowfullscreen', '');
 
         fullscreenTrigger = document.activeElement;
