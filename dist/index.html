@@ -35,6 +35,7 @@
       .resume-frame { height: calc(100dvh - 9.55rem - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
       .resume-panel { position: absolute; inset: 0; width: 100%; height: 100%; visibility: hidden; pointer-events: none; }
       .resume-panel.is-active { visibility: visible; pointer-events: auto; }
+      .fullscreen-close { top: calc(0.75rem + env(safe-area-inset-top)); right: calc(0.75rem + env(safe-area-inset-right)); }
       @media (min-width: 640px) {
         .resume-frame { height: calc(100dvh - 8rem); }
       }
@@ -44,30 +45,33 @@
     <main class="flex h-full min-h-0 flex-col">
       <header class="safe-top shrink-0 bg-ink text-white shadow-lg shadow-slate-900/20">
         <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pb-3 pt-3 sm:px-6">
-          <div class="min-w-0">
-            <h1 class="truncate text-lg font-semibold tracking-tight sm:text-xl">Vincent Pronel</h1>
-            <p id="resumeLabel" class="text-sm text-slate-300">AI/ML Résumé</p>
+          <div class="flex min-w-0 items-center gap-3">
+            <div class="min-w-0">
+              <h1 class="truncate text-lg font-semibold tracking-tight sm:text-xl">Vincent Pronel</h1>
+              <p id="resumeLabel" class="truncate text-sm text-slate-300">AI/ML Résumé</p>
+            </div>
+            <div class="h-8 w-px shrink-0 bg-slate-600" aria-hidden="true"></div>
+            <img
+              src="assets/kean-logo.svg"
+              alt="Kean University"
+              class="h-7 w-auto shrink-0 sm:h-8"
+            />
           </div>
-          <div class="flex shrink-0 gap-2">
-            <a
-              id="openLink"
-              href="resumes/vincent-pronel-ai-ml.pdf"
-              target="_blank"
-              rel="noopener"
-              class="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-600 px-3 text-sm font-medium transition hover:border-signal hover:text-signal focus:outline-none focus:ring-2 focus:ring-signal"
-              aria-label="Open selected résumé full screen"
+          <div class="flex shrink-0">
+            <button
+              id="shareButton"
+              type="button"
+              class="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-signal text-ink transition hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-white disabled:cursor-wait disabled:opacity-60"
+              aria-label="Share or save selected résumé"
+              title="Share or save résumé"
             >
-              Open
-            </a>
-            <a
-              id="downloadLink"
-              href="resumes/vincent-pronel-ai-ml.pdf"
-              download
-              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-signal px-3 text-sm font-semibold text-ink transition hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-white"
-              aria-label="Download selected résumé"
-            >
-              Download
-            </a>
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v12" />
+                <path d="m7 10 5 5 5-5" />
+                <path d="M5 21h14a2 2 0 0 0 2-2v-3" />
+                <path d="M3 16v3a2 2 0 0 0 2 2" />
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -111,6 +115,24 @@
 
       <section class="safe-bottom min-h-0 flex-1 p-2 sm:p-4" aria-live="polite">
         <div id="resumeViewer" class="resume-frame relative mx-auto max-w-6xl overflow-hidden rounded-xl border border-slate-300 bg-white shadow-xl shadow-slate-900/10">
+          <button
+            id="fullscreenButton"
+            type="button"
+            class="absolute right-3 top-3 z-20 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-ink/90 text-white shadow-lg backdrop-blur transition hover:bg-ink focus:outline-none focus:ring-2 focus:ring-signal"
+            aria-label="View selected résumé full screen"
+            title="Full screen"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 3H3v5" />
+              <path d="m3 3 6 6" />
+              <path d="M16 3h5v5" />
+              <path d="m21 3-6 6" />
+              <path d="M8 21H3v-5" />
+              <path d="m3 21 6-6" />
+              <path d="M16 21h5v-5" />
+              <path d="m21 21-6-6" />
+            </svg>
+          </button>
           <object
             class="resume-panel is-active bg-white"
             data-resume-panel="ai"
@@ -174,9 +196,33 @@
       </section>
     </main>
 
+    <div
+      id="fullscreenViewer"
+      class="fixed inset-0 z-50 bg-black"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="fullscreenTitle"
+      hidden
+    >
+      <h2 id="fullscreenTitle" class="sr-only">Full-screen résumé</h2>
+      <div id="fullscreenFrameHost" class="h-full w-full"></div>
+      <button
+        id="closeFullscreenButton"
+        type="button"
+        class="fullscreen-close absolute z-20 inline-flex h-11 w-11 items-center justify-center rounded-full bg-ink/90 text-white shadow-xl backdrop-blur transition hover:bg-ink focus:outline-none focus:ring-2 focus:ring-signal"
+        aria-label="Close full-screen résumé"
+        title="Close"
+      >
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M6 6l12 12" />
+          <path d="M18 6 6 18" />
+        </svg>
+      </button>
+    </div>
+
     <noscript>
       <div class="fixed inset-x-0 bottom-0 bg-amber-100 p-3 text-center text-sm text-amber-950">
-        JavaScript is disabled. Use the Open button above to view the AI/ML résumé.
+        JavaScript is required for résumé sharing and full-screen viewing.
       </div>
     </noscript>
 
@@ -185,18 +231,21 @@
         ai: {
           label: 'AI/ML Résumé',
           file: 'resumes/vincent-pronel-ai-ml.pdf',
+          downloadName: 'Vincent-Pronel-AI-ML-Resume.pdf',
           title: 'Vincent Pronel AI/ML résumé',
           tabId: 'tab-ai',
         },
         swe: {
           label: 'FullStack SWE Résumé',
           file: 'resumes/vincent-pronel-fullstack-swe.pdf',
+          downloadName: 'Vincent-Pronel-FullStack-SWE-Resume.pdf',
           title: 'Vincent Pronel full-stack software engineering résumé',
           tabId: 'tab-swe',
         },
         data: {
           label: 'Data Analysis Résumé',
           file: 'resumes/vincent-pronel-data-analysis.pdf',
+          downloadName: 'Vincent-Pronel-Data-Analysis-Resume.pdf',
           title: 'Vincent Pronel data analysis résumé',
           tabId: 'tab-data',
         },
@@ -205,11 +254,18 @@
       const tabs = [...document.querySelectorAll('[role="tab"]')];
       const viewerPanels = [...document.querySelectorAll('[data-resume-panel]')];
       const label = document.getElementById('resumeLabel');
-      const openLink = document.getElementById('openLink');
-      const downloadLink = document.getElementById('downloadLink');
+      const shareButton = document.getElementById('shareButton');
+      const fullscreenButton = document.getElementById('fullscreenButton');
+      const fullscreenViewer = document.getElementById('fullscreenViewer');
+      const fullscreenFrameHost = document.getElementById('fullscreenFrameHost');
+      const closeFullscreenButton = document.getElementById('closeFullscreenButton');
+      let currentResumeKey = 'ai';
+      let fullscreenTrigger = null;
+      let openedWithNativeFullscreen = false;
 
       function selectResume(key, updateHash = true) {
         const selected = resumes[key] || resumes.ai;
+        currentResumeKey = resumes[key] ? key : 'ai';
 
         tabs.forEach((tab) => {
           const isActive = tab.dataset.resume === key;
@@ -222,14 +278,90 @@
 
         label.textContent = selected.label;
         viewerPanels.forEach((panel) => {
-          const isActive = panel.dataset.resumePanel === key;
+          const isActive = panel.dataset.resumePanel === currentResumeKey;
           panel.classList.toggle('is-active', isActive);
           panel.setAttribute('aria-hidden', String(!isActive));
         });
-        openLink.href = selected.file;
-        downloadLink.href = selected.file;
 
-        if (updateHash) history.replaceState(null, '', `#${key}`);
+        if (updateHash) history.replaceState(null, '', `#${currentResumeKey}`);
+      }
+
+      function downloadResume(selected) {
+        const link = document.createElement('a');
+        link.href = selected.file;
+        link.download = selected.downloadName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+
+      async function shareResume() {
+        const selected = resumes[currentResumeKey];
+        shareButton.disabled = true;
+
+        try {
+          const response = await fetch(selected.file);
+          if (!response.ok) throw new Error('Unable to load résumé');
+          const resumeFile = new File([await response.blob()], selected.downloadName, { type: 'application/pdf' });
+
+          if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [resumeFile] }))) {
+            await navigator.share({
+              title: selected.title,
+              text: selected.title,
+              files: [resumeFile],
+            });
+          } else if (navigator.share) {
+            await navigator.share({
+              title: selected.title,
+              text: selected.title,
+              url: new URL(selected.file, window.location.href).href,
+            });
+          } else {
+            downloadResume(selected);
+          }
+        } catch (error) {
+          if (error.name !== 'AbortError') downloadResume(selected);
+        } finally {
+          shareButton.disabled = false;
+        }
+      }
+
+      function hideFullscreenViewer() {
+        fullscreenViewer.hidden = true;
+        fullscreenFrameHost.replaceChildren();
+        openedWithNativeFullscreen = false;
+        if (fullscreenTrigger) fullscreenTrigger.focus();
+      }
+
+      async function openFullscreenViewer() {
+        const selected = resumes[currentResumeKey];
+        const frame = document.createElement('iframe');
+        frame.src = `${selected.file}#view=FitH&toolbar=1&navpanes=0`;
+        frame.title = selected.title;
+        frame.className = 'h-full w-full border-0 bg-white';
+        frame.setAttribute('allowfullscreen', '');
+
+        fullscreenTrigger = document.activeElement;
+        fullscreenFrameHost.replaceChildren(frame);
+        fullscreenViewer.hidden = false;
+        closeFullscreenButton.focus();
+
+        if (fullscreenViewer.requestFullscreen) {
+          try {
+            await fullscreenViewer.requestFullscreen();
+            openedWithNativeFullscreen = true;
+          } catch {
+            openedWithNativeFullscreen = false;
+          }
+        }
+      }
+
+      async function closeFullscreenViewer() {
+        const shouldExitNativeFullscreen = document.fullscreenElement === fullscreenViewer;
+        hideFullscreenViewer();
+        if (shouldExitNativeFullscreen && document.exitFullscreen) {
+          try { await document.exitFullscreen(); } catch {}
+        }
       }
 
       tabs.forEach((tab, index) => {
@@ -245,6 +377,22 @@
           tabs[nextIndex].focus();
           selectResume(tabs[nextIndex].dataset.resume);
         });
+      });
+
+      shareButton.addEventListener('click', shareResume);
+      fullscreenButton.addEventListener('click', openFullscreenViewer);
+      closeFullscreenButton.addEventListener('click', closeFullscreenViewer);
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !fullscreenViewer.hidden && !document.fullscreenElement) {
+          closeFullscreenViewer();
+        }
+      });
+
+      document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement && openedWithNativeFullscreen && !fullscreenViewer.hidden) {
+          hideFullscreenViewer();
+        }
       });
 
       const initialKey = location.hash.slice(1);
