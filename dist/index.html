@@ -36,8 +36,9 @@
       .resume-panel { position: absolute; inset: 0; width: 100%; height: 100%; visibility: hidden; pointer-events: none; }
       .resume-panel.is-active { visibility: visible; pointer-events: auto; }
       .fullscreen-close { top: calc(0.75rem + env(safe-area-inset-top)); right: calc(0.75rem + env(safe-area-inset-right)); }
-      #fullscreenViewer { width: 100vw; height: 100dvh; overflow: hidden; }
-      .fullscreen-frame { position: absolute; inset: 0; width: 100vw; height: 100dvh; border: 0; background: white; }
+      #fullscreenViewer { width: 100vw; height: 100dvh; overflow: hidden; background: white; }
+      #fullscreenFrameHost { touch-action: pan-x pan-y pinch-zoom; -webkit-overflow-scrolling: touch; }
+      .fullscreen-preview { display: block; width: 100%; height: 100%; object-fit: contain; background: white; user-select: none; -webkit-user-drag: none; touch-action: pan-x pan-y pinch-zoom; }
       @media (min-width: 640px) {
         .resume-frame { height: calc(100dvh - 8rem); }
       }
@@ -205,11 +206,11 @@
       hidden
     >
       <h2 id="fullscreenTitle" class="sr-only">Full-screen résumé</h2>
-      <div id="fullscreenFrameHost" class="relative h-full w-full overflow-hidden"></div>
+      <div id="fullscreenFrameHost" class="relative h-full w-full overflow-auto"></div>
       <button
         id="closeFullscreenButton"
         type="button"
-        class="fullscreen-close absolute z-20 inline-flex h-11 w-11 items-center justify-center rounded-full bg-ink/90 text-white shadow-xl backdrop-blur transition hover:bg-ink focus:outline-none focus:ring-2 focus:ring-signal"
+        class="fullscreen-close absolute z-20 inline-flex h-11 w-11 items-center justify-center text-black transition hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-signal"
         aria-label="Close full-screen résumé"
         title="Close"
       >
@@ -231,6 +232,7 @@
         ai: {
           label: 'AI/ML Résumé',
           file: 'resumes/vincent-pronel-ai-ml.pdf',
+          preview: 'resume-previews/vincent-pronel-ai-ml.png',
           downloadName: 'Vincent-Pronel-AI-ML-Resume.pdf',
           title: 'Vincent Pronel AI/ML résumé',
           tabId: 'tab-ai',
@@ -238,6 +240,7 @@
         swe: {
           label: 'FullStack SWE Résumé',
           file: 'resumes/vincent-pronel-fullstack-swe.pdf',
+          preview: 'resume-previews/vincent-pronel-fullstack-swe.png',
           downloadName: 'Vincent-Pronel-FullStack-SWE-Resume.pdf',
           title: 'Vincent Pronel full-stack software engineering résumé',
           tabId: 'tab-swe',
@@ -245,6 +248,7 @@
         data: {
           label: 'Data Analysis Résumé',
           file: 'resumes/vincent-pronel-data-analysis.pdf',
+          preview: 'resume-previews/vincent-pronel-data-analysis.png',
           downloadName: 'Vincent-Pronel-Data-Analysis-Resume.pdf',
           title: 'Vincent Pronel data analysis résumé',
           tabId: 'tab-data',
@@ -335,15 +339,15 @@
 
       async function openFullscreenViewer() {
         const selected = resumes[currentResumeKey];
-        const frame = document.createElement('iframe');
-        frame.src = `${selected.file}#view=Fit&toolbar=0&navpanes=0`;
-        frame.title = selected.title;
-        frame.className = 'fullscreen-frame';
-        frame.scrolling = 'yes';
-        frame.setAttribute('allowfullscreen', '');
+        const preview = document.createElement('img');
+        preview.src = selected.preview;
+        preview.alt = selected.title;
+        preview.className = 'fullscreen-preview';
+        preview.draggable = false;
 
         fullscreenTrigger = document.activeElement;
-        fullscreenFrameHost.replaceChildren(frame);
+        fullscreenFrameHost.replaceChildren(preview);
+        fullscreenFrameHost.scrollTo(0, 0);
         fullscreenViewer.hidden = false;
         closeFullscreenButton.focus();
 
