@@ -15,6 +15,7 @@
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1220'/%3E%3Cpath d='M17 17h30v30H17z' fill='none' stroke='%2338bdf8' stroke-width='4'/%3E%3Cpath d='m23 25 9 18 9-18' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="resume-links.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -33,20 +34,19 @@
       .safe-top { padding-top: env(safe-area-inset-top); }
       .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
       .resume-frame { height: calc(100dvh - 9.55rem - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
-      .resume-panel { position: absolute; inset: 0; width: 100%; height: 100%; visibility: hidden; pointer-events: none; }
+      .resume-panel { position: absolute; inset: 0; width: 100%; height: 100%; overflow: auto; visibility: hidden; pointer-events: none; background: #e2e8f0; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
       .resume-panel.is-active { visibility: visible; pointer-events: auto; }
+      .document-page { position: relative; width: 100%; max-width: 61.875rem; margin: 0 auto; background: white; }
+      .document-preview { display: block; width: 100%; height: auto; background: white; user-select: none; -webkit-user-drag: none; }
+      .document-link-layer { position: absolute; inset: 0; pointer-events: none; }
+      .document-link { position: absolute; z-index: 10; border-radius: 0.2rem; pointer-events: auto; }
+      .document-link:hover { background: rgb(56 189 248 / 0.14); }
+      .document-link:focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; background: rgb(56 189 248 / 0.14); }
       .fullscreen-close { top: calc(0.75rem + env(safe-area-inset-top)); right: calc(0.75rem + env(safe-area-inset-right)); }
       #fullscreenViewer { width: 100vw; height: 100dvh; overflow: hidden; background: white; }
       #fullscreenFrameHost { touch-action: pan-x pan-y pinch-zoom; -webkit-overflow-scrolling: touch; }
       .fullscreen-page { position: relative; width: min(100vw, calc(100dvh * 0.772727)); height: min(100dvh, calc(100vw * 1.294118)); margin: auto; background: white; }
       .fullscreen-preview { display: block; width: 100%; height: 100%; background: white; user-select: none; -webkit-user-drag: none; touch-action: pan-x pan-y pinch-zoom; }
-      .viewer-social-links { position: absolute; top: 0; left: 50%; z-index: 15; width: 100%; aspect-ratio: 612 / 792; transform: translateX(-50%); pointer-events: none; }
-      .resume-social-link { position: absolute; top: 5.2%; height: 3.2%; z-index: 10; border-radius: 0.2rem; }
-      .viewer-social-links .resume-social-link { pointer-events: auto; }
-      .resume-social-link:hover { background: rgb(56 189 248 / 0.14); }
-      .resume-social-link:focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; background: rgb(56 189 248 / 0.14); }
-      .resume-social-link.linkedin { left: 45.45%; width: 21.2%; }
-      .resume-social-link.github { left: 67.15%; width: 16.5%; }
       @media (min-width: 640px) {
         .resume-frame { height: calc(100dvh - 8rem); }
       }
@@ -151,103 +151,52 @@
               <path d="m21 21-6-6" />
             </svg>
           </button>
-          <div id="viewerSocialLinks" class="viewer-social-links" aria-label="Résumé profile links">
-            <a
-              href="https://www.linkedin.com/in/vincent-pronel-286599369"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="resume-social-link linkedin"
-              aria-label="Open Vincent Pronel's LinkedIn profile"
-              title="Open LinkedIn"
-            ></a>
-            <a
-              href="https://github.com/vinnypronel"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="resume-social-link github"
-              aria-label="Open Vincent Pronel's GitHub profile"
-              title="Open GitHub"
-            ></a>
-          </div>
-          <object
-            class="resume-panel is-active bg-white"
+          <div
+            class="resume-panel is-active"
             data-resume-panel="ai"
-            data="resumes/vincent-pronel-ai-ml.pdf#view=FitH&amp;toolbar=1&amp;navpanes=0"
-            type="application/pdf"
             role="tabpanel"
             aria-labelledby="tab-ai"
-            title="Vincent Pronel AI/ML résumé"
           >
-            <div class="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-              <p class="max-w-md text-base text-slate-700">Your browser cannot display this PDF inline.</p>
-              <a
-                href="resumes/vincent-pronel-ai-ml.pdf"
-                target="_blank"
-                rel="noopener"
-                class="rounded-lg bg-ink px-5 py-3 font-semibold text-white"
-              >Open the résumé</a>
+            <div class="document-page">
+              <img src="resume-previews/vincent-pronel-ai-ml.png" alt="Vincent Pronel AI/ML résumé" class="document-preview" draggable="false" />
+              <div class="document-link-layer" data-link-host="ai"></div>
             </div>
-          </object>
-          <object
-            class="resume-panel bg-white"
+          </div>
+          <div
+            class="resume-panel"
             data-resume-panel="swe"
-            data="resumes/vincent-pronel-fullstack-swe.pdf#view=FitH&amp;toolbar=1&amp;navpanes=0"
-            type="application/pdf"
             role="tabpanel"
             aria-labelledby="tab-swe"
             aria-hidden="true"
-            title="Vincent Pronel full-stack software engineering résumé"
           >
-            <div class="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-              <p class="max-w-md text-base text-slate-700">Your browser cannot display this PDF inline.</p>
-              <a
-                href="resumes/vincent-pronel-fullstack-swe.pdf"
-                target="_blank"
-                rel="noopener"
-                class="rounded-lg bg-ink px-5 py-3 font-semibold text-white"
-              >Open the résumé</a>
+            <div class="document-page">
+              <img src="resume-previews/vincent-pronel-fullstack-swe.png" alt="Vincent Pronel full-stack software engineering résumé" class="document-preview" draggable="false" />
+              <div class="document-link-layer" data-link-host="swe"></div>
             </div>
-          </object>
-          <object
-            class="resume-panel bg-white"
+          </div>
+          <div
+            class="resume-panel"
             data-resume-panel="data"
-            data="resumes/vincent-pronel-data-analysis.pdf#view=FitH&amp;toolbar=1&amp;navpanes=0"
-            type="application/pdf"
             role="tabpanel"
             aria-labelledby="tab-data"
             aria-hidden="true"
-            title="Vincent Pronel data analysis résumé"
           >
-            <div class="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-              <p class="max-w-md text-base text-slate-700">Your browser cannot display this PDF inline.</p>
-              <a
-                href="resumes/vincent-pronel-data-analysis.pdf"
-                target="_blank"
-                rel="noopener"
-                class="rounded-lg bg-ink px-5 py-3 font-semibold text-white"
-              >Open the résumé</a>
+            <div class="document-page">
+              <img src="resume-previews/vincent-pronel-data-analysis.png" alt="Vincent Pronel data analysis résumé" class="document-preview" draggable="false" />
+              <div class="document-link-layer" data-link-host="data"></div>
             </div>
-          </object>
-          <object
-            class="resume-panel bg-white"
+          </div>
+          <div
+            class="resume-panel"
             data-resume-panel="abstract"
-            data="documents/gmis-abstract-pronel.pdf#view=FitH&amp;toolbar=1&amp;navpanes=0"
-            type="application/pdf"
             role="tabpanel"
             aria-labelledby="tab-abstract"
             aria-hidden="true"
-            title="Vincent Pronel GMiS research abstract"
           >
-            <div class="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-              <p class="max-w-md text-base text-slate-700">Your browser cannot display this PDF inline.</p>
-              <a
-                href="documents/gmis-abstract-pronel.pdf"
-                target="_blank"
-                rel="noopener"
-                class="rounded-lg bg-ink px-5 py-3 font-semibold text-white"
-              >Open the abstract</a>
+            <div class="document-page">
+              <img src="document-previews/gmis-abstract-pronel.png" alt="Vincent Pronel GMiS research abstract" class="document-preview" draggable="false" />
             </div>
-          </object>
+          </div>
         </div>
       </section>
     </main>
@@ -323,17 +272,38 @@
       const label = document.getElementById('resumeLabel');
       const shareButton = document.getElementById('shareButton');
       const fullscreenButton = document.getElementById('fullscreenButton');
-      const viewerSocialLinks = document.getElementById('viewerSocialLinks');
       const fullscreenViewer = document.getElementById('fullscreenViewer');
       const fullscreenFrameHost = document.getElementById('fullscreenFrameHost');
       const closeFullscreenButton = document.getElementById('closeFullscreenButton');
-      const socialLinks = {
-        linkedin: 'https://www.linkedin.com/in/vincent-pronel-286599369',
-        github: 'https://github.com/vinnypronel',
-      };
+      const linkRegions = window.resumeLinkRegions || {};
       let currentResumeKey = 'ai';
       let fullscreenTrigger = null;
       let openedWithNativeFullscreen = false;
+
+      function createDocumentLink(region) {
+        const link = document.createElement('a');
+        link.href = region.url;
+        link.className = 'document-link';
+        link.setAttribute('aria-label', region.label);
+        link.title = region.label;
+        link.style.left = `${region.left}%`;
+        link.style.top = `${region.top}%`;
+        link.style.width = `${region.width}%`;
+        link.style.height = `${region.height}%`;
+        if (/^https?:/i.test(region.url)) {
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        }
+        return link;
+      }
+
+      function renderDocumentLinks(host, key) {
+        (linkRegions[key] || []).forEach((region) => host.appendChild(createDocumentLink(region)));
+      }
+
+      document.querySelectorAll('[data-link-host]').forEach((host) => {
+        renderDocumentLinks(host, host.dataset.linkHost);
+      });
 
       function selectResume(key, updateHash = true) {
         const selected = resumes[key] || resumes.ai;
@@ -349,7 +319,6 @@
         });
 
         label.textContent = selected.label;
-        viewerSocialLinks.hidden = currentResumeKey === 'abstract';
         viewerPanels.forEach((panel) => {
           const isActive = panel.dataset.resumePanel === currentResumeKey;
           panel.classList.toggle('is-active', isActive);
@@ -417,18 +386,7 @@
         preview.draggable = false;
 
         page.appendChild(preview);
-        if (currentResumeKey !== 'abstract') {
-          Object.entries(socialLinks).forEach(([network, url]) => {
-            const link = document.createElement('a');
-            link.href = url;
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            link.className = `resume-social-link ${network}`;
-            link.setAttribute('aria-label', `Open Vincent Pronel's ${network === 'linkedin' ? 'LinkedIn' : 'GitHub'} profile`);
-            link.title = network === 'linkedin' ? 'Open LinkedIn' : 'Open GitHub';
-            page.appendChild(link);
-          });
-        }
+        renderDocumentLinks(page, currentResumeKey);
 
         fullscreenTrigger = document.activeElement;
         fullscreenFrameHost.replaceChildren(page);
