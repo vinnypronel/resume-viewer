@@ -89,7 +89,7 @@
         <nav class="mx-auto max-w-6xl px-2 sm:px-6" aria-label="Documents">
           <div
             id="resumeTabs"
-            class="grid grid-cols-4 gap-1 rounded-t-xl bg-slate-800/80 p-1"
+            class="grid grid-cols-3 gap-1 rounded-t-xl bg-slate-800/80 p-1"
             role="tablist"
             aria-label="Choose a document"
           >
@@ -120,15 +120,6 @@
               data-resume="data"
               class="min-h-11 rounded-lg px-2 py-2 text-sm font-medium text-slate-300 transition hover:bg-slate-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-signal sm:text-base"
             >Data Analysis</button>
-            <button
-              type="button"
-              role="tab"
-              id="tab-abstract"
-              aria-selected="false"
-              aria-controls="resumeViewer"
-              data-resume="abstract"
-              class="min-h-11 rounded-lg px-2 py-2 text-sm font-medium text-slate-300 transition hover:bg-slate-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-signal sm:text-base"
-            >Abstract</button>
           </div>
         </nav>
       </header>
@@ -186,17 +177,6 @@
             <div class="document-page">
               <img src="resume-previews/vincent-pronel-data-analysis.png" alt="Vincent Pronel data analysis résumé" class="document-preview" draggable="false" />
               <div class="document-link-layer" data-link-host="data"></div>
-            </div>
-          </div>
-          <div
-            class="resume-panel"
-            data-resume-panel="abstract"
-            role="tabpanel"
-            aria-labelledby="tab-abstract"
-            aria-hidden="true"
-          >
-            <div class="document-page">
-              <img src="document-previews/gmis-abstract-pronel.png" alt="Vincent Pronel GMiS research abstract" class="document-preview" draggable="false" />
             </div>
           </div>
         </div>
@@ -258,14 +238,6 @@
           downloadName: 'Vincent-Pronel-Data-Analysis-Resume.pdf',
           title: 'Vincent Pronel data analysis résumé',
           tabId: 'tab-data',
-        },
-        abstract: {
-          label: 'Research Abstract',
-          file: 'documents/gmis-abstract-pronel.pdf',
-          preview: 'document-previews/gmis-abstract-pronel.png',
-          downloadName: 'Vincent-Pronel-GMiS-Abstract.pdf',
-          title: 'Vincent Pronel GMiS research abstract',
-          tabId: 'tab-abstract',
         },
       };
 
